@@ -12,8 +12,6 @@
 # See the LICENSE file for details.
 # -----------------------------------------------------------------------------
 
-from flask import Blueprint
-
 from .controllers.api_routes import blueprint as api_blueprint
 from .controllers.routes import blueprint as core_blueprint
 from .module import CoreModule
