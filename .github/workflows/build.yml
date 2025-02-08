@@ -1,0 +1,13 @@
+name: Build
+
+on: [ push ]
+
+jobs:
+  lint_and_format:
+    name: Lint and format checks
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: astral-sh/ruff-action@v3
+      - run: ruff check --select I --fix
+      - run: ruff format
