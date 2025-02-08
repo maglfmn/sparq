@@ -8,6 +8,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: astral-sh/ruff-action@v3
-      - run: ruff check --select I --fix
-      - run: ruff format
+
+      - name: Ruff lint
+        uses: astral-sh/ruff-action@v3
+        with:
+          args: check --select I --output-format=github
+
+      - name: Ruff format
+        uses: astral-sh/ruff-action@v3
+        with:
+          args: format --check
