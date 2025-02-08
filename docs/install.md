@@ -1,67 +1,54 @@
 # Install sparQ
 
-## Requirements:
-- Python 3.10+
-- pip
-- git
-- OSX/Linux
-
-
 ## Get the code:
+
 ```bash
 git clone https://github.com/sparqone/sparq
 cd sparq
 ```
 
-## Setup Virtual Environment
+### Install **uv**
 
-If you don't have venv installed (Ubuntu/Debian):
-```bash
-sudo apt-get install python3-venv
-```
+https://docs.astral.sh/uv/getting-started/installation
 
-## Create and activate virtual environment:
-```bash
-python3 -m venv .venv
-source .venv/bin/activate
-```
-
-## Install Dependencies
-
-### Quick Install (Recommended)
-```bash
-pip install -r requirements.txt
-```
-
-Skip to the end to run the application.
-
-
-### Manual Dependency Update 
-If you need to update dependencies:
-
-1. Install pip-tools:
-```bash
-pip install pip-tools
-```
-
-2. Update requirements.in with new dependencies
-
-3. Compile new requirements.txt:
-```bash
-pip-compile --output-file=requirements.txt requirements.in
-```
-
-4. Install updated dependencies:
-```bash
-pip install -r requirements.txt
-```
-
-## Run the Application
+### Run the app
 
 ```bash
-python app.py
+uv run app.py
 ```
 
-The application will be available at http://localhost:8000
+Access the application at http://localhost:8000
 
+## Run the tests
 
+```bash
+uv run pytest
+```
+
+## Dependencies
+
+### Updating dependencies
+
+```bash
+uv lock
+```
+
+### Adding new packages
+
+```bash
+uv add <package-name>
+```
+
+### Syncing your local environment
+
+```bash
+uv sync
+```
+
+## Notes
+
+You can also still activate the environment and run the app manually:
+
+```bash
+. .venv/bin/activate
+```
