@@ -42,5 +42,8 @@ exclude = ["venv"]
 [tool.ruff.format]
 quote-style = "double"
 
+[tool.ruff.lint]
+extend-select = ["I"]
+
 [tool.ruff.lint.isort]
 force-single-line = true

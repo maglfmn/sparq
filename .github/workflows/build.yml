@@ -12,7 +12,7 @@ jobs:
       - name: Ruff lint
         uses: astral-sh/ruff-action@v3
         with:
-          args: check --select I --output-format=github
+          args: check --output-format=github
 
       - name: Ruff format
         uses: astral-sh/ruff-action@v3
