@@ -1,4 +1,5 @@
 import pytest
+from flask import Flask
 
 
 def pytest_addoption(parser):
@@ -12,3 +13,11 @@ def pytest_addoption(parser):
 def pytest_runtest_setup(item):
     if "integration" in item.keywords and not item.config.getoption("--integration"):
         pytest.skip("need --integration option to run this test")
+
+
+@pytest.fixture
+def app():
+    app = Flask(__name__)
+    app.config["TESTING"] = True
+    with app.app_context():
+        yield app

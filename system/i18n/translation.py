@@ -45,6 +45,7 @@ def preload_translations():
                         TRANSLATIONS.setdefault(lang_code, {}).setdefault(module_name, {}).update(
                             json.load(f)
                         )
+    return TRANSLATIONS
 
 
 def translate(text):

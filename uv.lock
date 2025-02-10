@@ -328,6 +328,15 @@ wheels = [
 ]
 
 [[package]]
+name = "pyfakefs"
+version = "5.7.4"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/8e/f9/3a2f10b1b3e251cec47ab7581d15bc39553cd5a23893cbe0efe633856c4e/pyfakefs-5.7.4.tar.gz", hash = "sha256:4971e65cc80a93a1e6f1e3a4654909c0c493186539084dc9301da3d68c8878fe", size = 213382 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/b9/52/eb08c795d9159da167334a7fa8a23bd04112b4c8b63030a2600711a94143/pyfakefs-5.7.4-py3-none-any.whl", hash = "sha256:3e763d700b91c54ade6388be2cfa4e521abc00e34f7defb84ee511c73031f45f", size = 228706 },
+]
+
+[[package]]
 name = "pytest"
 version = "8.3.4"
 source = { registry = "https://pypi.org/simple" }
@@ -340,6 +349,18 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/05/35/30e0d83068951d90a01852cb1cef56e5d8a09d20c7f511634cc2f7e0372a/pytest-8.3.4.tar.gz", hash = "sha256:965370d062bce11e73868e0335abac31b4d3de0e82f4007408d242b4f8610761", size = 1445919 }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/11/92/76a1c94d3afee238333bc0a42b82935dd8f9cf8ce9e336ff87ee14d9e1cf/pytest-8.3.4-py3-none-any.whl", hash = "sha256:50e16d954148559c9a74109af1eaf0c945ba2d8f30f0a3d3335edde19788b6f6", size = 343083 },
+]
+
+[[package]]
+name = "pytest-mock"
+version = "3.14.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "pytest" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/c6/90/a955c3ab35ccd41ad4de556596fa86685bf4fc5ffcc62d22d856cfd4e29a/pytest-mock-3.14.0.tar.gz", hash = "sha256:2719255a1efeceadbc056d6bf3df3d1c5015530fb40cf347c0f9afac88410bd0", size = 32814 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/f2/3b/b26f90f74e2986a82df6e7ac7e319b8ea7ccece1caec9f8ab6104dc70603/pytest_mock-3.14.0-py3-none-any.whl", hash = "sha256:0b72c38033392a5f4621342fe11e9219ac11ec9d375f8e2a0c164539e0d70f6f", size = 9863 },
 ]
 
 [[package]]
@@ -448,6 +469,8 @@ dependencies = [
     { name = "jinja2" },
     { name = "markupsafe" },
     { name = "pluggy" },
+    { name = "pyfakefs" },
+    { name = "pytest-mock" },
     { name = "python-dotenv" },
     { name = "requests" },
     { name = "sqlalchemy" },
@@ -480,6 +503,8 @@ requires-dist = [
     { name = "jinja2", specifier = "==3.1.5" },
     { name = "markupsafe", specifier = "==3.0.2" },
     { name = "pluggy", specifier = "==1.5.0" },
+    { name = "pyfakefs", specifier = ">=5.7.4" },
+    { name = "pytest-mock", specifier = ">=3.14.0" },
     { name = "python-dotenv", specifier = "==1.0.1" },
     { name = "requests", specifier = "==2.32.3" },
     { name = "sqlalchemy", specifier = "==2.0.38" },
