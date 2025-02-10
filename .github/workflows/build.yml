@@ -18,3 +18,20 @@ jobs:
         uses: astral-sh/ruff-action@v3
         with:
           args: format --check
+
+  run_tests:
+    name: Run tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Python
+        uses: actions/setup-python@v5
+
+      - name: Install uv
+        run: |
+          pip install uv
+          uv sync --all-groups
+
+      - name: Run pytest
+        run: uv run pytest
