@@ -10,13 +10,23 @@
 # See the LICENSE file for details.
 # -----------------------------------------------------------------------------
 
-from flask import current_app, g, render_template, request, redirect, url_for, flash
-from flask_login import login_required
 from datetime import datetime
 
+from flask import flash
+from flask import g
+from flask import redirect
+from flask import render_template
+from flask import request
+from flask import url_for
+from flask_login import login_required
+
 from modules.core.models.user import User
-from modules.people.models.employee import Employee, EmployeeType, EmployeeStatus, Gender
+from modules.people.models.employee import Employee
+from modules.people.models.employee import EmployeeStatus
+from modules.people.models.employee import EmployeeType
+from modules.people.models.employee import Gender
 from system.db.database import db
+
 from . import blueprint
 
 
@@ -35,6 +45,7 @@ def people_home():
         installed_modules=g.installed_modules,
     )
 
+
 @blueprint.route("/dashboard")
 @login_required
 def dashboard():
@@ -42,6 +53,7 @@ def dashboard():
     return render_template(
         "dashboard/index.html", active_page="dashboard", module_home="people_bp.people_home"
     )
+
 
 @blueprint.route("/employees")
 @login_required
@@ -119,7 +131,7 @@ def create_employee():
 def edit_employee(employee_id):
     """Edit an employee"""
     employee = Employee.query.get_or_404(employee_id)
-    
+
     if request.method == "POST":
         try:
             # Update user info
@@ -127,46 +139,50 @@ def edit_employee(employee_id):
             employee.user.first_name = request.form.get("first_name")
             employee.user.last_name = request.form.get("last_name")
             employee.user.is_admin = bool(request.form.get("is_admin"))
-            
+
             # Update password if provided
             password = request.form.get("password")
             if password and password.strip():
                 employee.user.set_password(password)
-            
+
             # Update employee info
             employee.position = request.form.get("position")
             employee.department = request.form.get("department")
             employee.phone = request.form.get("phone")
-            employee.salary = float(request.form.get("salary")) if request.form.get("salary") else None
-            
+            employee.salary = (
+                float(request.form.get("salary")) if request.form.get("salary") else None
+            )
+
             # Update address information
             employee.address = request.form.get("address")
             employee.city = request.form.get("city")
             employee.state = request.form.get("state")
             employee.zip_code = request.form.get("zip_code")
-            
+
             # Handle dates
             start_date = request.form.get("start_date")
             if start_date:
-                employee.start_date = datetime.strptime(start_date, '%Y-%m-%d').date()
-            
+                employee.start_date = datetime.strptime(start_date, "%Y-%m-%d").date()
+
             birthday = request.form.get("birthday")
             if birthday:
-                employee.birthday = datetime.strptime(birthday, '%Y-%m-%d').date()
-            
+                employee.birthday = datetime.strptime(birthday, "%Y-%m-%d").date()
+
             # Update type if provided
             if request.form.get("type"):
                 employee.type = EmployeeType[request.form.get("type")]
-            
+
             # Update gender if provided
             if request.form.get("gender"):
                 employee.gender = Gender[request.form.get("gender")]
-            
+
             # Update other fields
             employee.emergency_contact_name = request.form.get("emergency_contact_name")
             employee.emergency_contact_phone = request.form.get("emergency_contact_phone")
-            employee.emergency_contact_relationship = request.form.get("emergency_contact_relationship")
-            
+            employee.emergency_contact_relationship = request.form.get(
+                "emergency_contact_relationship"
+            )
+
             db.session.commit()
             flash("Employee updated successfully", "success")
             return redirect(url_for("people_bp.employee_detail", employee_id=employee.id))
@@ -175,7 +191,7 @@ def edit_employee(employee_id):
             db.session.rollback()
             flash(f"Error updating employee: {str(e)}", "error")
             return redirect(url_for("people_bp.edit_employee", employee_id=employee_id))
-            
+
     return render_template(
         "employees/form.html",
         title="Edit Employee",
@@ -210,10 +226,8 @@ def delete_employee(employee_id):
 @login_required
 def delete_modal(employee_id):
     """Show delete confirmation modal"""
-    return render_template(
-        "employees/delete-modal.html",
-        employee_id=employee_id
-    )
+    return render_template("employees/delete-modal.html", employee_id=employee_id)
+
 
 @blueprint.route("/employees/<int:employee_id>")
 @login_required
@@ -221,42 +235,35 @@ def employee_detail(employee_id):
     """Show employee details"""
     employee = Employee.query.get_or_404(employee_id)
     return render_template(
-        "employees/details.html",
-        employee=employee,
-        module_home="people_bp.people_home"
+        "employees/details.html", employee=employee, module_home="people_bp.people_home"
     )
+
 
 @blueprint.route("/employees/<int:employee_id>/edit-field/<field>", methods=["GET"])
 @login_required
 def edit_field(employee_id, field):
     """Show edit field modal"""
     employee = Employee.query.get_or_404(employee_id)
-    field_label = field.replace('_', ' ').title()
+    field_label = field.replace("_", " ").title()
     return render_template(
-        "employees/edit-field-modal.html",
-        employee=employee,
-        field=field,
-        field_label=field_label
+        "employees/edit-field-modal.html", employee=employee, field=field, field_label=field_label
     )
+
 
 @blueprint.route("/employees/<int:employee_id>/update-field/<field>", methods=["PUT"])
 @login_required
 def update_field(employee_id, field):
     """Update employee field"""
     employee = Employee.query.get_or_404(employee_id)
-    
-    if field == 'name':
-        employee.user.first_name = request.form.get('first_name')
-        employee.user.last_name = request.form.get('last_name')
+
+    if field == "name":
+        employee.user.first_name = request.form.get("first_name")
+        employee.user.last_name = request.form.get("last_name")
     # Add other field updates as needed
-    
+
     try:
         db.session.commit()
-        return render_template(
-            "employees/field-value.html",
-            employee=employee,
-            field=field
-        )
+        return render_template("employees/field-value.html", employee=employee, field=field)
     except Exception as e:
         db.session.rollback()
-        return str(e), 400 
+        return str(e), 400
