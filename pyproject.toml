@@ -30,6 +30,7 @@ dependencies = [
 
 [dependency-groups]
 dev = [
+    "faker",
     "pyfakefs",
     "playwright",
     "pytest",
