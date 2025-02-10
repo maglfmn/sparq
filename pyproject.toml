@@ -20,8 +20,6 @@ dependencies = [
     "jinja2==3.1.5",
     "markupsafe==3.0.2",
     "pluggy==1.5.0",
-    "pyfakefs>=5.7.4",
-    "pytest-mock>=3.14.0",
     "python-dotenv==1.0.1",
     "requests==2.32.3",
     "sqlalchemy==2.0.38",
@@ -32,8 +30,10 @@ dependencies = [
 
 [dependency-groups]
 dev = [
+    "pyfakefs",
     "playwright",
     "pytest",
+    "pytest-mock",
     "ruff",
 ]
 

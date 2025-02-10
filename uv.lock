@@ -469,8 +469,6 @@ dependencies = [
     { name = "jinja2" },
     { name = "markupsafe" },
     { name = "pluggy" },
-    { name = "pyfakefs" },
-    { name = "pytest-mock" },
     { name = "python-dotenv" },
     { name = "requests" },
     { name = "sqlalchemy" },
@@ -482,7 +480,9 @@ dependencies = [
 [package.dev-dependencies]
 dev = [
     { name = "playwright" },
+    { name = "pyfakefs" },
     { name = "pytest" },
+    { name = "pytest-mock" },
     { name = "ruff" },
 ]
 
@@ -503,8 +503,6 @@ requires-dist = [
     { name = "jinja2", specifier = "==3.1.5" },
     { name = "markupsafe", specifier = "==3.0.2" },
     { name = "pluggy", specifier = "==1.5.0" },
-    { name = "pyfakefs", specifier = ">=5.7.4" },
-    { name = "pytest-mock", specifier = ">=3.14.0" },
     { name = "python-dotenv", specifier = "==1.0.1" },
     { name = "requests", specifier = "==2.32.3" },
     { name = "sqlalchemy", specifier = "==2.0.38" },
@@ -516,7 +514,9 @@ requires-dist = [
 [package.metadata.requires-dev]
 dev = [
     { name = "playwright" },
+    { name = "pyfakefs" },
     { name = "pytest" },
+    { name = "pytest-mock" },
     { name = "ruff" },
 ]
 
