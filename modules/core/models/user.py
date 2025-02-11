@@ -19,6 +19,8 @@ from werkzeug.security import generate_password_hash
 from system.db.database import db
 from system.db.decorators import ModelRegistry
 
+from .user_setting import UserSetting
+
 
 @ModelRegistry.register
 class User(db.Model, UserMixin):

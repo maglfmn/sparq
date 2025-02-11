@@ -13,7 +13,6 @@
 
 from flask import Blueprint
 from flask import flash
-from flask import g
 from flask import redirect
 from flask import render_template
 from flask import request
@@ -35,7 +34,7 @@ def tasks_home():
     """Tasks home page"""
     try:
         tasks = Task.get_all()
-    except:
+    except Exception:
         tasks = []  # If table doesn't exist or any other error, just use empty list
 
     return render_template(

@@ -1,31 +1,54 @@
 # Install sparQ
 
-Requirements:
-- Python 3.10+
-- pip
-- git
-- OSX/Linux
+## Get the code:
 
-
-Get the code:
 ```bash
 git clone https://github.com/sparqone/sparq
 cd sparq
 ```
 
-Install venv if you don't have it:
+### Install **uv**
+
+https://docs.astral.sh/uv/getting-started/installation
+
+### Run the app
+
 ```bash
-sudo apt install python3-venv
+uv run app.py
 ```
 
-Create a virtual environment and install the dependencies:
+Access the application at http://localhost:8000
+
+## Run the tests
+
 ```bash
-python3 -m venv .venv
-source .venv/bin/activate
-pip install -r requirements.txt
+uv run pytest
 ```
 
-Run the app:
+## Dependencies
+
+### Updating dependencies
+
 ```bash
-python3 app.py
+uv lock
+```
+
+### Adding new packages
+
+```bash
+uv add <package-name>
+```
+
+### Syncing your local environment
+
+```bash
+uv sync
+```
+
+## Notes
+
+You can also still activate the environment and run the app manually:
+
+```bash
+. .venv/bin/activate
 ```

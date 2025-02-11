@@ -40,29 +40,27 @@ def preload_translations():
                 if lang_file.endswith(".json"):
                     lang_code = lang_file.replace(".json", "")
                     file_path = os.path.join(module_lang_path, lang_file)
-
                     with open(file_path, "r", encoding="utf-8") as f:
                         TRANSLATIONS.setdefault(lang_code, {}).setdefault(module_name, {}).update(
                             json.load(f)
                         )
+    return TRANSLATIONS
+
+
+def get_translation(lang, module, text, default=None):
+    """Get a translation for a specific language and module"""
+    return TRANSLATIONS.get(lang, {}).get(module, {}).get(text, default or {})
 
 
 def translate(text):
     """Custom translation function"""
-    lang = g.get("lang", current_app.config.get("DEFAULT_LANGUAGE", "en"))
+    lang = g.get("lang")
     current_module = g.get("current_module", {}).get("name", "core")
 
-    # If we're not in the core module, try the module-specific translation
-    if current_module != "core":
-        module_trans = TRANSLATIONS.get(lang, {}).get(current_module, {}).get(text)
-        # Only use module translation if it's nonempty
-        if module_trans is not None and module_trans != "":
-            return module_trans
-
-    # Fallback to core translation
-    core_trans = TRANSLATIONS.get(lang, {}).get("core", {}).get(text)
-    if core_trans is not None and core_trans != "":
-        return core_trans
+    for module in [current_module, "core"]:
+        translation = get_translation(lang, module, text, None)
+        if translation is not None and translation != "" and translation != {}:
+            return translation
 
     # Finally, return the original text if no translation is found.
     return text
@@ -74,11 +72,11 @@ def get_format_patterns(lang=None):
         lang = g.get("lang", current_app.config.get("DEFAULT_LANGUAGE", "en"))
 
     # Get patterns from core module first (defaults)
-    patterns = TRANSLATIONS.get(lang, {}).get("core", {}).get("_meta", {}).copy()
+    patterns = get_translation(lang, "core", "_meta").copy()
 
     # Override with current module patterns if they exist, but only if the value is nonempty.
     current_module = g.get("current_module", {}).get("name", "core")
-    module_patterns = TRANSLATIONS.get(lang, {}).get(current_module, {}).get("_meta", {})
+    module_patterns = get_translation(lang, current_module, "_meta")
 
     for key, value in module_patterns.items():
         # Only override if the module value is not empty

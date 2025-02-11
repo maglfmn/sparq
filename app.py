@@ -12,19 +12,12 @@
 # See the LICENSE file for details.
 # -----------------------------------------------------------------------------
 
-import warnings
-
-warnings.filterwarnings("ignore", message="urllib3 v2 only supports OpenSSL 1.1.1+")
-
 import os
 
 from flask import Flask
 from flask import g
-from flask import jsonify
-from flask import redirect
 from flask import request
 from flask import session
-from flask import url_for
 from flask_login import LoginManager
 from flask_login import current_user
 from flask_socketio import SocketIO
@@ -37,14 +30,12 @@ from system.i18n.translation import format_date
 from system.i18n.translation import format_number
 from system.i18n.translation import preload_translations
 from system.i18n.translation import translate
-from system.module.loader import ModuleLoader
 from system.module.utils import initialize_modules
-from system.module.utils import print_module_status
 
 
 def get_locale():
     """Get locale from URL parameters or default to English"""
-    return request.args.get("lang", "en")
+    return request.args.get("lang", os.environ.get("DEFAULT_LANGUAGE", "en"))
 
 
 def create_app():
@@ -65,6 +56,7 @@ def create_app():
     )
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
     app.config["SECRET_KEY"] = os.environ.get("SECRET_KEY", "dev")
+    app.config["DEFAULT_LANGUAGE"] = os.environ.get("DEFAULT_LANGUAGE", "en")
 
     # Initialize extensions
     db.init_app(app)
@@ -76,8 +68,6 @@ def create_app():
 
     @login_manager.user_loader
     def load_user(user_id):
-        from flask import current_app
-
         return db.session.get(User, int(user_id))
 
     # Initialize and validate modules

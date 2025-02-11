@@ -18,7 +18,8 @@ def s_playwright():
         yield p
 
 
-def test_smoke(s_playwright):
+@pytest.mark.integration
+def test_homepage(s_playwright):
     browser = s_playwright.chromium.launch(headless=True)  # Run in headless mode for speed
     page = browser.new_page()
 
@@ -29,6 +30,6 @@ def test_smoke(s_playwright):
     assert page.get_by_role("button", name="Login")  # Example: check if "Login" button is visible
 
     # Screenshot for debugging
-    page.screenshot(path=".scratch/smoke_test.png")
+    page.screenshot(path=".scratch/test_homepage.png")
 
     browser.close()

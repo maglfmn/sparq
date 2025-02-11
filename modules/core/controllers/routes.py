@@ -13,7 +13,6 @@
 
 import importlib
 import os
-import signal
 import sys
 from functools import wraps
 
@@ -172,7 +171,7 @@ def register():
             User.create(email=email, password=password, first_name=first_name, last_name=last_name)
             flash("Registration successful! Please login.", "success")
             return redirect(url_for("core_bp.login"))
-        except Exception as e:
+        except Exception:
             flash("Registration failed", "error")
 
     return render_template("register.html")
