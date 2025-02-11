@@ -35,7 +35,7 @@ from system.module.utils import initialize_modules
 
 def get_locale():
     """Get locale from URL parameters or default to English"""
-    return request.args.get("lang", "en")
+    return request.args.get("lang", os.environ.get("DEFAULT_LANGUAGE", "en"))
 
 
 def create_app():
@@ -56,6 +56,7 @@ def create_app():
     )
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
     app.config["SECRET_KEY"] = os.environ.get("SECRET_KEY", "dev")
+    app.config["DEFAULT_LANGUAGE"] = os.environ.get("DEFAULT_LANGUAGE", "en")
 
     # Initialize extensions
     db.init_app(app)

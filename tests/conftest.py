@@ -1,5 +1,6 @@
 import pytest
-from flask import Flask
+
+from app import create_app
 
 
 def pytest_addoption(parser):
@@ -15,9 +16,9 @@ def pytest_runtest_setup(item):
         pytest.skip("need --integration option to run this test")
 
 
-@pytest.fixture
+@pytest.fixture(scope="session")
 def app():
-    app = Flask(__name__)
-    app.config["TESTING"] = True
-    with app.app_context():
-        yield app
+    application = create_app()
+    application.config["TESTING"] = True
+    with application.app_context():
+        yield application
