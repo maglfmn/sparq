@@ -22,3 +22,10 @@ def app():
     application.config["TESTING"] = True
     with application.app_context():
         yield application
+
+
+@pytest.fixture
+def mock_fs(fs):
+    # This is from the `pyfakefs` package.
+    # `mock_fs` is a little more obvious than `fs`.
+    return fs
