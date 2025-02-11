@@ -26,16 +26,22 @@ def core_module_path(app):
     return os.path.join(app.root_path, "modules", module_name, "lang")
 
 
-def test_preload_translations__translations_exist(module_path, fs, module_name):
-    fs.create_file(os.path.join(module_path, "es.json"), contents='{"Settings": "Configuración"}')
-    fs.create_file(os.path.join(module_path, "fr.json"), contents='{"Settings": "Paramètres"}')
+def test_preload_translations__translations_exist(module_path, mock_fs, module_name):
+    mock_fs.create_file(
+        os.path.join(module_path, "es.json"),
+        contents='{"Settings": "Configuración"}',
+    )
+    mock_fs.create_file(
+        os.path.join(module_path, "fr.json"),
+        contents='{"Settings": "Paramètres"}',
+    )
     actual_translations = preload_translations()
     assert actual_translations["es"][module_name]["Settings"] == "Configuración"
     assert actual_translations["fr"][module_name]["Settings"] == "Paramètres"
 
 
-def test_preload_translations__translations_empty(module_path, fs, module_name):
-    fs.create_file(os.path.join(module_path, "es.json"), contents="{}")
+def test_preload_translations__translations_empty(module_path, mock_fs, module_name):
+    mock_fs.create_file(os.path.join(module_path, "es.json"), contents="{}")
     actual_translations = preload_translations()
     assert actual_translations["es"][module_name] == {}
 
@@ -53,10 +59,10 @@ def test_preload_translations__translations_missing(module_path, fs):
         ("en", "SettingsValue"),
     ],
 )
-def test_translate__translation_exists(fs, language, module_path, translated_value):
+def test_translate__translation_exists(mock_fs, language, module_path, translated_value):
     """Translation will take from the current module."""
     g.lang = language
-    fs.create_file(
+    mock_fs.create_file(
         os.path.join(module_path, f"{language}.json"),
         contents=json.dumps({"SettingsKey": translated_value}),
     )
@@ -71,10 +77,10 @@ def test_translate__translation_exists(fs, language, module_path, translated_val
         ("en", "SettingsValue"),
     ],
 )
-def test_translate__translation_from_core(fs, language, core_module_path, translated_value):
+def test_translate__translation_from_core(mock_fs, language, core_module_path, translated_value):
     """Translation will take from the `core` module."""
     g.lang = language
-    fs.create_file(
+    mock_fs.create_file(
         os.path.join(core_module_path, f"{language}.json"),
         contents=json.dumps({"SettingsKey": translated_value}),
     )
